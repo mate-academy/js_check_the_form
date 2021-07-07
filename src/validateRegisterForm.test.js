@@ -7,7 +7,7 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(validateRegisterForm).toBeInstanceOf(Function);
   });
 
-  it(`should return boolean`, () => {
+  it(`should return object`, () => {
     expect(typeof validateRegisterForm('test@mail.com', 'P@ssword1!'))
       .toBe('object');
   });
