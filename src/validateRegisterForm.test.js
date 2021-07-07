@@ -44,7 +44,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return success message for valid password and Character \`.\` 
-  if it is not the first 
+  if it is not the first
   or last character and it will not come one after the other in email.`, () => {
     const isValid = validateRegisterForm('t.e.s.t@mail.com', 'P@ssword1!');
 
@@ -53,7 +53,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error message for valid password and Character \`.\` 
-  if it is the first character of email The personal_info part`, () => {
+  if it is the first character of email personal_info part`, () => {
     const isValid = validateRegisterForm('.t.e.s.t@mail.com', 'P@ssword1!');
 
     expect(isValid.code).toBe(422);
@@ -61,7 +61,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error message for valid password and Character \`.\` 
-  if it is the last character of email the personal_info part`, () => {
+  if it is the last character of email personal_info part`, () => {
     const isValid = validateRegisterForm('t.e.s.t.@mail.com', 'P@ssword1!');
 
     expect(isValid.code).toBe(422);
@@ -154,15 +154,6 @@ describe(`Function 'validateRegisterForm':`, () => {
 
     expect(isValid.code).toBe(422);
     expect(isValid.message).toBe('Password is invalid.');
-  });
-
-  it(`should return success message for valid email and
-  if password contain with valid length and contain at least
-  1 digit, 1 special character, 1 uppercase letter.`, () => {
-    const isValid = validateRegisterForm('test@mail.com', 'P@ssword1!');
-
-    expect(isValid.code).toBe(200);
-    expect(isValid.message).toBe('Email and password are valid.');
   });
 
   it(`should return error message for valid email and
