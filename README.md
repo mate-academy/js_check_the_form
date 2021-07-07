@@ -1,9 +1,9 @@
 Write tests for the function `validateRegisterForm`, which takes two strings `password` and `email`, and returns an object with a response that contain status code and message.
 
-If all entered data is valid object contains status code `200` and message `Email and password are valid.`.
-If entered email is invalid object contains status code `422` and message `Email is invalid.`.
-If entered password is invalid object contains status code `422` and message `Password is invalid.`.
-If entered password and email are invalid object contains status code `500` and message `Password and email are invalid.`.
+If all entered data is valid object contains status code `200` and message `Email and password are valid.`.  
+If entered email is invalid object contains status code `422` and message `Email is invalid.`.  
+If entered password is invalid object contains status code `422` and message `Password is invalid.`.  
+If entered password and email are invalid object contains status code `500` and message `Password and email are invalid.`.  
 
 Requirements for the valid password:
 - accepts letters `Aa-Zz, Aa-Яя`;
