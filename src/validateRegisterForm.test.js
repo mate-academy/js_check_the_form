@@ -65,7 +65,7 @@ describe(`Function 'validateRegisterForm':`, () => {
 
   it(`should return error message for the valid
   email and password with cyrillic letters`, () => {
-    const isValid = validateRegisterForm('test@mail.com', 'П@роль789!');
+    const isValid = validateRegisterForm('test@mail.com', 'Пaроль789!');
 
     expect(isValid.code).toBe(422);
     expect(isValid.message).toBe('Password is invalid.');
@@ -108,7 +108,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   it(`should return error for valid password
   and email that contain double dots`, () => {
     const invalidPassword
-    = validateRegisterForm('t..est@mail.com', 'Password1!');
+    = validateRegisterForm('t:est@mail.com', 'Password1!');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Email is invalid.');
