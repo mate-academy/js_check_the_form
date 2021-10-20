@@ -40,7 +40,8 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmailMask.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email without @`, () => {
+  it(`should return error for password without number
+   and email without @`, () => {
     const invalidEmailMaskAndPassword = validateRegisterForm(
       'testmail.com', 'P@ssword');
 
@@ -57,14 +58,16 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.message).toBe('Email and password are valid.');
   });
 
-  it(`should return success message for the valid input`, () => {
+  it(`should return success message for the valid email 
+  and too short password`, () => {
     const invalidPassword = validateRegisterForm('te_st@mail.com', 'P@sd1');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it(`should return success message for the valid input`, () => {
+  it(`should return success message for the valid email 
+  and too long password`, () => {
     const invalidPassword = validateRegisterForm(
       'te.st@mail.com', 'P@ssword1!12345678');
 
@@ -72,7 +75,8 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it(`should return success message for the valid input`, () => {
+  it(`should return success message for the valid email
+  and password without capital letter`, () => {
     const invalidPassword = validateRegisterForm(
       'test@mail.lom.com', 'p@ssword1!');
 
@@ -80,15 +84,17 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it(`should return success message for the valid input`, () => {
+  it(`should return success message for the valid email
+  and password without symbols`, () => {
     const invalidPassword = validateRegisterForm(
-      'test@mail.lo_m.com', 'P@ssword!');
+      'test@mail.lo_m.com', 'P1ssword');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it(`should return error for valid password and email without @`, () => {
+  it(`should return error for valid password 
+  and email with dot at the beginning of the word`, () => {
     const invalidEmailMask = validateRegisterForm(
       '.test@mail.com', 'P@ssword1');
 
@@ -96,7 +102,8 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmailMask.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email without @`, () => {
+  it(`should return error for valid password 
+  and email with two dots in a row`, () => {
     const invalidEmailMask = validateRegisterForm(
       'te..st@mail.com', 'P@ssword1');
 
@@ -104,7 +111,8 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmailMask.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email without @`, () => {
+  it(`should return error for valid password 
+  and email with dot at the beginning of the main domain`, () => {
     const invalidEmailMask = validateRegisterForm(
       'test@.mail.com', 'P@ssword1');
 
@@ -112,17 +120,10 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmailMask.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email without @`, () => {
+  it(`should return error for valid password 
+  and email with :`, () => {
     const invalidEmailMask = validateRegisterForm(
       'te:st@mail.com', 'P@ssword1');
-
-    expect(invalidEmailMask.code).toBe(422);
-    expect(invalidEmailMask.message).toBe('Email is invalid.');
-  });
-
-  it(`should return error for valid password and email without @`, () => {
-    const invalidEmailMask = validateRegisterForm(
-      'test@ma:il.com', 'P@ssword1');
 
     expect(invalidEmailMask.code).toBe(422);
     expect(invalidEmailMask.message).toBe('Email is invalid.');
