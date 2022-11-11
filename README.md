@@ -6,17 +6,17 @@ If entered password is invalid object contains status code `422` and message `Pa
 If entered password and email are invalid object contains status code `500` and message `Password and email are invalid.`.  
 
 Requirements for the valid password:
-- accepts letters `Aa-Zz, Aa-Яя`;
-- at least 8 characters inclusive;
+- accepts letters `Aa-Zz, Aa-Яя`; 
+- at least 8 characters inclusive; 
 - maximum 16 characters inclusive;
 - contains at least 1 digit, 1 special character, 1 uppercase letter.
 
-Requirements for the valid email:
+Requirements for the valid email: 'test@mail.com', 'P@ssword1!'
 - English letters(Aa-Zz).
 - Digits.
 - Characters: ! # $ % & ' * + - / = ? ^ _ ` { | } ~
 - Character `.` ( period, dot or fullstop) provided that it is not the first or last character and it will not come one after the other.
-- @ is required
+- @ is required 
 - top Level domain can not start with dot `.` 
 - top level domain can not start with dot `.`
 - an email should not be start with `.`
