@@ -134,9 +134,7 @@ describe(`Function 'validateRegisterForm':`, () => {
       .toBe('Email is invalid.');
   });
 
-  it(`should return error for invalid email -
-    double dots are not allowed
-    and valid password`, () => {
+  it(`should return error for invalid email and password`, () => {
     const invalidEmail
     = validateRegisterForm('te:st@mail.com', 'ssword1!');
 
