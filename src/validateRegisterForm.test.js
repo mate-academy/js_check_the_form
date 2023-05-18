@@ -81,27 +81,36 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for valid password `
-    + `and email if . is first character`, () => {
+    + `and email if email includes . as first character`, () => {
     const invalidPassword
-      = validateRegisterForm('.test@maяil.com', '1ppD@dddddddd');
+      = validateRegisterForm('.test@mail.com', '1ppD@dddddddd');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Email is invalid.');
   });
 
   it(`should return error for valid password `
-    + `and email if . come one after the other`, () => {
+    + `and email if email includes . as last character before @`, () => {
     const invalidPassword
-      = validateRegisterForm('te..st@maяil.com', '1ppD@dddddddd');
+      = validateRegisterForm('test.@mail.com', '1ppD@dddddddd');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Email is invalid.');
   });
 
   it(`should return error for valid password `
-    + `and email if top level domain can start with dot .`, () => {
+    + `and email if email has . come one after the other`, () => {
     const invalidPassword
-      = validateRegisterForm('test@maяil..com', '1ppD@dddddddd');
+      = validateRegisterForm('te..st@mail.com', '1ppD@dddddddd');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password `
+    + `and email if top level domain of email starts with dot .`, () => {
+    const invalidPassword
+      = validateRegisterForm('test@.mail.com', '1ppD@dddddddd');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Email is invalid.');
