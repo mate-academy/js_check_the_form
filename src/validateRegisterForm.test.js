@@ -26,5 +26,18 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it('should return error for email without @ symbol', () => {
+    const invalidEmail = validateRegisterForm('test.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for email without @ symbol
+    and password without at least one special symbol`, () => {
+    const invalidData = validateRegisterForm('test123', 'incorrectPassword123');
+
+    expect(invalidData.code).toBe(500);
+    expect(invalidData.message).toBe('Password and email are invalid.');
+  });
 });
