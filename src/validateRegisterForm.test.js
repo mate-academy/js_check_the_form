@@ -26,5 +26,39 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it('should return error for email without @ symbol', () => {
+    const invalidEmail = validateRegisterForm('test.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for email without @ symbol
+    and password without at least one special symbol`, () => {
+    const invalidData = validateRegisterForm('test123', 'incorrectPassword123');
+
+    expect(invalidData.code).toBe(500);
+    expect(invalidData.message).toBe('Password and email are invalid.');
+  });
+
+  it('should return error for email where domain name starts with dot', () => {
+    const invalidData = validateRegisterForm('test123@.gmail.com', 'P@ssword1!@');
+    
+    expect(invalidData.code).toBe(422);
+    expect(invalidData.message).toBe('Email is invalid.');
+  });
+
+  it('should return error for email which starts with dot', () => {
+    const invalidData = validateRegisterForm('.test123@gmail.com', 'P@ssword1!@');
+    
+    expect(invalidData.code).toBe(422);
+    expect(invalidData.message).toBe('Email is invalid.');
+  });
+  
+  it('should return error for email which contains double dots', () => {
+    const invalidData = validateRegisterForm('t..est123@gmail.com', 'P@ssword1!@');
+    
+    expect(invalidData.code).toBe(422);
+    expect(invalidData.message).toBe('Email is invalid.');
+  });
 });
