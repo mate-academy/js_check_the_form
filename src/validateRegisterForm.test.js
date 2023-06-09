@@ -40,4 +40,25 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidData.code).toBe(500);
     expect(invalidData.message).toBe('Password and email are invalid.');
   });
+
+  it('should return error for email where domain name starts with dot', () => {
+    const invalidData = validateRegisterForm('test123@.gmail.com', 'P@ssword1!@');
+    
+    expect(invalidData.code).toBe(422);
+    expect(invalidData.message).toBe('Email is invalid.');
+  });
+
+  it('should return error for email which starts with dot', () => {
+    const invalidData = validateRegisterForm('.test123@gmail.com', 'P@ssword1!@');
+    
+    expect(invalidData.code).toBe(422);
+    expect(invalidData.message).toBe('Email is invalid.');
+  });
+  
+  it('should return error for email which contains double dots', () => {
+    const invalidData = validateRegisterForm('t..est123@gmail.com', 'P@ssword1!@');
+    
+    expect(invalidData.code).toBe(422);
+    expect(invalidData.message).toBe('Email is invalid.');
+  });
 });
