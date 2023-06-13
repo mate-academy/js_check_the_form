@@ -27,7 +27,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for valid email and password `
-  + `without capital latter`, () => {
+  + `without capital letter`, () => {
     const invalidPassword = validateRegisterForm('test@mail.com', 'p1@ssword');
 
     expect(invalidPassword.code).toBe(422);
@@ -43,7 +43,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for valid email and password`
-  + ` langth less 8 character`, () => {
+  + ` length less 8 character`, () => {
     const invalidPassword = validateRegisterForm('test@mail.com', 'P1*word');
 
     expect(invalidPassword.code).toBe(422);
