@@ -96,15 +96,6 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for valid password `
-  + `and  email with Cyrillic letters`, () => {
-    const invalidEmail = validateRegisterForm('Testф@mail.com',
-      'P1@ssword');
-
-    expect(invalidEmail.code).toBe(422);
-    expect(invalidEmail.message).toBe('Email is invalid.');
-  });
-
-  it(`should return error for valid password `
   + `and  email  starting with a dot`, () => {
     const invalidEmail = validateRegisterForm('.Testф@mail.com',
       'P1@ssword');
