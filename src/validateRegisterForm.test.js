@@ -52,9 +52,10 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.message).toBe('Email and password are valid.');
   });
 
-  it(`should return error for valid email and password less 
-  than 17 characters`, () => {
-    const invalidPassword = validateRegisterForm('test@mail.com', 'P@ss1');
+  it(`should return error for valid email and password more 
+  than 16 characters`, () => {
+    const invalidPassword = validateRegisterForm('test@mail.com',
+      'P@ssword123456781');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Password is invalid.');
@@ -107,11 +108,11 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for email not ending with '.'`, () => {
-    const validEmail = validateRegisterForm('test@mail.com', 'P@ssword1!');
+  it(`should return error for email ending with '.'`, () => {
+    const validEmail = validateRegisterForm('test@mail.com.', 'P@ssword1!');
 
-    expect(validEmail.code).not.toBe(422);
-    expect(validEmail.message).not.toBe('Email is invalid.');
+    expect(validEmail.code).toBe(422);
+    expect(validEmail.message).toBe('Email is invalid.');
   });
 
   it(`should return error for invalid email with consecutive dots`,
@@ -133,12 +134,11 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for invalid email and password`, () => {
-    const invalidEmailAndPassword = validateRegisterForm('invalidemail',
-      'invalidpassword');
+    const invalidEmail = 'email_without_at_symbol';
+    const invalidPassword = 'passwordWithoutSpecialCharOrNumber';
+    const result = validateRegisterForm(invalidEmail, invalidPassword);
 
-    expect(invalidEmailAndPassword.code).toBe(500);
-
-    expect(invalidEmailAndPassword.message)
-      .toBe('Password and email are invalid.');
+    expect(result.code).toBe(500);
+    expect(result.message).toBe('Password and email are invalid.');
   });
 });
