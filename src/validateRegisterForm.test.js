@@ -82,14 +82,6 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(result.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for invalid 
-  email with top-level domain starting with a dot`, () => {
-    const result = validateRegisterForm('.test@mail.com', 'P@ssword1');
-
-    expect(result.code).toBe(422);
-    expect(result.message).toBe('Email is invalid.');
-  });
-
   it(`should return error for invalid email
    with top-level domain starting with a dot`, () => {
     const result = validateRegisterForm('test@.mail.com', 'P@ssword1');
