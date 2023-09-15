@@ -43,8 +43,55 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(result.message).toBe('Password is invalid.');
   });
 
+  it(`should return error for password less than 8 characters`, () => {
+    const invalidPassword = validateRegisterForm('test@mail.com', 'P@ss1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password more than 16 characters`, () => {
+    const invalidPassword
+     = validateRegisterForm('test@mail.com', 'TooLongPassword123456!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password with braces`, () => {
+    const invalidPassword
+     = validateRegisterForm('test@mail.com', '');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password with empty space in braces`, () => {
+    const invalidPassword
+     = validateRegisterForm('test@mail.com', ' ');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+
   it(`should return error for invalid email`, () => {
     const result = validateRegisterForm('test@com', 'P@ssword1');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for invalid email with empty braces`, () => {
+    const result = validateRegisterForm('', 'P@ssword1');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for invalid email 
+  with empty space braces`, () => {
+    const result = validateRegisterForm(' ', 'P@ssword1');
 
     expect(result.code).toBe(422);
     expect(result.message).toBe('Email is invalid.');
