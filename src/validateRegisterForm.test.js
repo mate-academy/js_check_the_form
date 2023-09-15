@@ -19,14 +19,6 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.message).toBe('Email and password are valid.');
   });
 
-  it(`should return error for valid email and password
-   without number`, () => {
-    const invalidPassword = validateRegisterForm('test@mail.com', 'P@ssword');
-
-    expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe('Password is invalid.');
-  });
-
   it(`should return error for valid email and 
   password without a special character`, () => {
     const result = validateRegisterForm('test@mail.com', 'Password1');
@@ -38,6 +30,14 @@ describe(`Function 'validateRegisterForm':`, () => {
   it(`should return error for valid email and password
    without an uppercase letter`, () => {
     const result = validateRegisterForm('test@mail.com', 'p@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid email and password
+   without an number`, () => {
+    const result = validateRegisterForm('test@mail.com', 'P@ssword!!');
 
     expect(result.code).toBe(422);
     expect(result.message).toBe('Password is invalid.');
@@ -68,7 +68,7 @@ describe(`Function 'validateRegisterForm':`, () => {
 
   it(`should return error for password with empty space in braces`, () => {
     const invalidPassword
-     = validateRegisterForm('test@mail.com', ' ');
+     = validateRegisterForm('test@mail.com', 'P@ssw ord1!');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Password is invalid.');
@@ -91,7 +91,7 @@ describe(`Function 'validateRegisterForm':`, () => {
 
   it(`should return error for invalid email 
   with empty space braces`, () => {
-    const result = validateRegisterForm(' ', 'P@ssword1');
+    const result = validateRegisterForm('te st@mail.com', 'P@ssword1');
 
     expect(result.code).toBe(422);
     expect(result.message).toBe('Email is invalid.');
