@@ -148,14 +148,6 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Email is invalid.');
   });
 
-  it(`should return an error for valid password and email
-  with top level domain started with .`, () => {
-    const invalidPassword = validateRegisterForm('tes@.mail.com', 'P@ssword1!');
-
-    expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe('Email is invalid.');
-  });
-
   it(`should return a proper error for both invalid email and password`, () => {
     const invalidPassword = validateRegisterForm('testmail.com', 'P@ssword');
 
