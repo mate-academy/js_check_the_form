@@ -70,4 +70,61 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Password is invalid.');
   });
+
+  it(`should return error for valid password and email
+  whith double dots`, () => {
+    const invalidEmail = validateRegisterForm('test:12@mail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password and an email with
+   a dot symbol, which come one after the other`, () => {
+    const invalidEmail = validateRegisterForm('te..st@mail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password and email username that
+   starts with a dot symbol`, () => {
+    const invalidEmail = validateRegisterForm('.test@mail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return an error for a valid password and an email address
+  that contains characters: '! # $ % & ' * + - / = ? ^ _ { | } ~'`, () => {
+    const invalidEmail = validateRegisterForm('t!e#st@mail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password and email without
+  top level domain with dot`, () => {
+    const invalidEmail = validateRegisterForm('test@mailcom', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return an error for a valid email address and password length
+  greater than 16 characters`, () => {
+    const invalidEmail
+    = validateRegisterForm('test@mail.com', 'P@ssssssswwwwwwoooooord1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid password and email username that
+  ends with a dot symbol`, () => {
+    const invalidEmail = validateRegisterForm('test.@mail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
 });
