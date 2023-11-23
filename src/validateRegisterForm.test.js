@@ -60,3 +60,38 @@ it(`should return error for valid email and password with more than 16 character
   expect(invalidPassword.code).toBe(422);
   expect(invalidPassword.message).toBe('Password is invalid.');
 });
+
+it(`should return error for valid email and password with less than 8 characters`, () => {
+  const invalidPassword = validateRegisterForm('test@mail.com', 'P@ss1');
+
+  expect(invalidPassword.code).toBe(422);
+  expect(invalidPassword.message).toBe('Password is invalid.');
+});
+
+it(`should return error for valid email and password without lowercase letter`, () => {
+  const invalidPassword = validateRegisterForm('test@mail.com', 'P@SSWORD1');
+
+  expect(invalidPassword.code).toBe(422);
+  expect(invalidPassword.message).toBe('Password is invalid.');
+});
+
+it(`should return error for email starting with a dot`, () => {
+  const invalidEmail = validateRegisterForm('.test@mail.com', 'P@ssword1!');
+
+  expect(invalidEmail.code).toBe(422);
+  expect(invalidEmail.message).toBe('Email is invalid.');
+});
+
+it(`should return error for email with double dots`, () => {
+  const invalidEmail = validateRegisterForm('test..test@mail.com', 'P@ssword1!');
+
+  expect(invalidEmail.code).toBe(422);
+  expect(invalidEmail.message).toBe('Email is invalid.');
+});
+
+it(`should return error for email without @ symbol`, () => {
+  const invalidEmail = validateRegisterForm('testmail.com', 'P@ssword1!');
+
+  expect(invalidEmail.code).toBe(422);
+  expect(invalidEmail.message).toBe('Email is invalid.');
+});
