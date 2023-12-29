@@ -26,5 +26,37 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+it('should input the valid password, which includes at least 8 characters', () => {
+  const validPassword = validateRegisterForm('123olesia');
+  expect(validPassword.code).to.be.equal(200);
+  expect(validPassword.message).to.be.equal('Password is valid.');
+  });
+
+  it(`should return error for short password`, () => {
+    const invalidPassword = validateRegisterForm('test@mail.com', 'Pass1@');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it('should return error for both invalid email and password format', () => {
+    const invalidData = validateRegisterForm('invalid.email@com', 'InvalidPassword');
+
+    expect(invalidData.code).to.be.equal(500);
+    expect(invalidData.message).to.be.equal('Email and password are invalid.');
+  });
+
+  it('should return error for invalid email format', () => {
+    const invalidEmail = validateRegisterForm('invalid.email@com', 'ValidP@ss123');
+
+    expect(invalidEmail.code).to.be.equal(422);
+    expect(invalidEmail.message).to.be.equal('Email is invalid.');
+  });
+
+  it('should return error for empty email and password', () => {
+    const emptyData = validateRegisterForm('', '');
+
+    expect(emptyData.code).to.be.equal(500);
+    expect(emptyData.message).to.be.equal('Email and password are invalid.');
+  });
 });
