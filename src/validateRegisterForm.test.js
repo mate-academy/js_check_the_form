@@ -32,6 +32,13 @@ it('should input the valid password, which includes at least 8 characters', () =
   expect(validPassword.message).to.be.equal('Password is valid.');
   });
 
+  it(`should return error for too long password`, () => {
+    const invalidPassword = validateRegisterForm('test@mail.com', 'Pass1@12jjdjdjdkkckcclclcjgkkcndcldc');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
   it(`should return error for short password`, () => {
     const invalidPassword = validateRegisterForm('test@mail.com', 'Pass1@');
 
@@ -44,6 +51,21 @@ it('should input the valid password, which includes at least 8 characters', () =
 
     expect(invalidData.code).to.be.equal(500);
     expect(invalidData.message).to.be.equal('Email and password are invalid.');
+  });
+
+  
+  it(`should return error for the email, which starts with dot .`, () => {
+    const invalidEmail = validateRegisterForm('.invalidemail@gmail.com', 'ValidP@ss123');
+
+    expect(invalidEmail.code).to.be.equal(422);
+    expect(invalidEmail.message).to.be.equal('Email is invalid.');
+  });
+
+  it(`should input the valid password with letters Aa-Zz, Aa-Яя`, () => {
+    const isValid = validateRegisterForm('Test@mail.com', 'P@ssword1!');
+
+    expect(isValid.code).toBe(200);
+    expect(isValid.message).toBe('Email and password are valid.');
   });
 
   it('should return error for invalid email format', () => {
@@ -59,4 +81,5 @@ it('should input the valid password, which includes at least 8 characters', () =
     expect(emptyData.code).to.be.equal(500);
     expect(emptyData.message).to.be.equal('Email and password are invalid.');
   });
+
 });
