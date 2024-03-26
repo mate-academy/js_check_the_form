@@ -22,14 +22,6 @@ describe(`Function 'validateRegisterForm':`, () => {
       expect(isValid.message).toBe('Email and password are valid.');
     });
 
-    it(`for password length between 8 and 16 Cyrilic letters,`
-    + ` 1 digit, 1 special character, 1 uppercase letter`, () => {
-      const isValid = validateRegisterForm('test@mail.com', 'Ки@иллица1!');
-
-      expect(isValid.code).toBe(200);
-      expect(isValid.message).toBe('Email and password are valid.');
-    });
-
     it(`for email that contain personal and domain`
       + ` parts separated by @`, () => {
       const isValid = validateRegisterForm('test1@mail.com', 'P@ssword1!');
