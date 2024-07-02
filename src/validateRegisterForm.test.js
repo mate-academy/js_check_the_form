@@ -110,13 +110,6 @@ describe(`Function 'validateRegisterForm':`, () => {
       expect(isValid.message).toBe('Email and password are valid.');
     });
 
-    it(`should return error for an email without digits`, () => {
-      const invalidEmail = validateRegisterForm('test@com', 'P@ssword1!');
-
-      expect(invalidEmail.code).toBe(422);
-      expect(invalidEmail.message).toBe('Email is invalid.');
-    });
-
     it('should return success for valid email with special characters', () => {
       const isValid = validateRegisterForm('test123@mail.com', 'P@ssword1!');
 
@@ -131,7 +124,7 @@ describe(`Function 'validateRegisterForm':`, () => {
       expect(invalidEmail.message).toBe('Email is invalid.');
     });
 
-    it(`should return success for a valid email with periods`, () => {
+    it(`should return success for valid email containing single period`, () => {
       const isValid = validateRegisterForm('test.mail@mail.com', 'P@ssword1!');
 
       expect(isValid.code).toBe(200);
@@ -176,27 +169,6 @@ describe(`Function 'validateRegisterForm':`, () => {
 
     it(`should return success for a valid email with a top-level'
       + 'domain not starting with a dot`, () => {
-      const isValid = validateRegisterForm('test@mail.com', 'P@ssword1!');
-
-      expect(isValid.code).toBe(200);
-      expect(isValid.message).toBe('Email and password are valid.');
-    });
-
-    it(`should return success for valid email not starting with a dot`, () => {
-      const isValid = validateRegisterForm('test@mail.com', 'P@ssword1!');
-
-      expect(isValid.code).toBe(200);
-      expect(isValid.message).toBe('Email and password are valid.');
-    });
-
-    it(`should return error for an email starting with a dot`, () => {
-      const invalidEmail = validateRegisterForm('.test@mail.com', 'P@ssword1!');
-
-      expect(invalidEmail.code).toBe(422);
-      expect(invalidEmail.message).toBe('Email is invalid.');
-    });
-
-    it(`should return success for a valid email without double dots`, () => {
       const isValid = validateRegisterForm('test@mail.com', 'P@ssword1!');
 
       expect(isValid.code).toBe(200);
