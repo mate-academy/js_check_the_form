@@ -183,7 +183,7 @@ describe(`Function 'validateRegisterForm':`, () => {
       expect(invalidPassword.message).toBe('Password is invalid.');
     });
 
-    it(`should not contain at least 1 digit`, () => {
+    it(`should contain at least 1 digit`, () => {
       const invalidPassword
         = validateRegisterForm('test@mail.com', 'P@ssssdf');
 
@@ -191,7 +191,7 @@ describe(`Function 'validateRegisterForm':`, () => {
       expect(invalidPassword.message).toBe('Password is invalid.');
     });
 
-    it(`should not contain at least 1 special character`, () => {
+    it(`should contain at least 1 special character`, () => {
       const invalidPassword
         = validateRegisterForm('test@mail.com', 'Pssssdf1');
 
@@ -199,7 +199,7 @@ describe(`Function 'validateRegisterForm':`, () => {
       expect(invalidPassword.message).toBe('Password is invalid.');
     });
 
-    it(`should not contain at least 1 uppercase letter`, () => {
+    it(`should contain at least 1 uppercase letter`, () => {
       const invalidPassword
         = validateRegisterForm('test@mail.com', 'p@ssssdf1');
 
