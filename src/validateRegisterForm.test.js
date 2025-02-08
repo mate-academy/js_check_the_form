@@ -20,7 +20,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return code 500 and fail message
-  for the invalid "email" and "password"`, () => {
+  for both invalid "email" and "password"`, () => {
     const isValid = validateRegisterForm('te:st@mail.com', 'Password1');
 
     expect(isValid.code).toBe(500);
