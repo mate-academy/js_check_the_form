@@ -26,5 +26,74 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it(`should return error for valid email and
+    password less than 8 characters`, () => {
+    const invalidPassword = validateRegisterForm('test@mail.com', 'P@ord1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid email and
+  password more than 16 characters `, () => {
+    const invalidPassword
+      = validateRegisterForm('test@mail.com', 'P@sssssssssword1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid email
+    and password without special character`, () => {
+    const invalidPassword
+      = validateRegisterForm('test@mail.com', 'Passsword1');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid email
+  and password without 1 uppercase letter`, () => {
+    const invalidPassword
+      = validateRegisterForm('test@mail.com', 'p@ssword1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid password
+  and email with dot as first character`, () => {
+    const invalidPassword
+      = validateRegisterForm('.test@mail.com', 'P@ssword1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password
+  and email with dot as last character`, () => {
+    const invalidPassword
+      = validateRegisterForm('test.@mail.com', 'P@ssword1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Email is invalid.');
+  });
+
+  it(`should return success message for the valid password and
+    email with digits`, () => {
+    const invalidPassword
+      = validateRegisterForm('test9@mail.com', 'P@ssword1!');
+
+    expect(invalidPassword.code).toBe(200);
+    expect(invalidPassword.message).toBe('Email and password are valid.');
+  });
+
+  it(`should return error for valid password
+  and email without @`, () => {
+    const invalidPassword
+      = validateRegisterForm('testmail.com', 'P@ssword1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Email is invalid.');
+  });
 });
