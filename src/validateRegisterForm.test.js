@@ -80,7 +80,7 @@ describe(`Function 'validateRegisterForm':`, () => {
     it("should return an error if email starts with a dot", () => {});
   });
 
-  describe("Invalid email and password cases", () => {
+  describe("Invalid email cases", () => {
     it(`should return error for valid password and email with no English letters (Aa-Zz)`, () => {
       const invalidPassword = validateRegisterForm(
         "тестлап838@gmail.com",
@@ -134,6 +134,45 @@ describe(`Function 'validateRegisterForm':`, () => {
 
       expect(invalidPassword.code).toBe(422);
       expect(invalidPassword.message).toBe("Email is invalid.");
+    });
+  });
+
+  describe('Invalid email and password cases', () => {
+    it(`should return error for email without @ and password without digit`, () => {
+      const invalidPassword = validateRegisterForm(
+        "testgmail.com",
+        "P@sswordd"
+      );
+
+      expect(invalidPassword.code).toBe(500);
+      expect(invalidPassword.message).toBe("Password and email are invalid.");
+    });
+    it(`should return error for email which starts with a dot and password with less than 8 chars`, () => {
+      const invalidPassword = validateRegisterForm(
+        ".test@gmail.com",
+        "P@ssw1d"
+      );
+
+      expect(invalidPassword.code).toBe(500);
+      expect(invalidPassword.message).toBe("Password and email are invalid.");
+    });
+    it(`should return error for email with ':' and password without special chars`, () => {
+      const invalidPassword = validateRegisterForm(
+        "t:est@gmail.com",
+        "Password1"
+      );
+
+      expect(invalidPassword.code).toBe(500);
+      expect(invalidPassword.message).toBe("Password and email are invalid.");
+    });
+    it(`should return error for email without letters and password without digits`, () => {
+      const invalidPassword = validateRegisterForm(
+        "...@gmail.com",
+        "P@ssword!"
+      );
+
+      expect(invalidPassword.code).toBe(500);
+      expect(invalidPassword.message).toBe("Password and email are invalid.");
     });
   });
 });
