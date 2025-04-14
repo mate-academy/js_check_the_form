@@ -26,5 +26,70 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it(`should return error for invalid email and valid password`, () => {
+    const invalidEmail = validateRegisterForm('testmail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for invalid email and invalid password`, () => {
+    const invalidEmailPassword = validateRegisterForm(
+      'invalid-mail', 'wrong password');
+
+    expect(invalidEmailPassword.code).toBe(500);
+
+    expect(invalidEmailPassword.message).toBe(
+      'Password and email are invalid.');
+  });
+
+  it(
+    `should return error for 
+    valid email and password without special character`,
+    () => {
+      const invalidEmailPassword = validateRegisterForm(
+        'itest@mail.com', 'Password1');
+
+      expect(invalidEmailPassword.code).toBe(422);
+
+      expect(invalidEmailPassword.message).toBe(
+        'Password is invalid.');
+    });
+
+  it(
+    `should return error for valid email and password without uppercase letter`,
+    () => {
+      const invalidEmailPassword = validateRegisterForm(
+        'itest@mail.com', 'p@ssword1!');
+
+      expect(invalidEmailPassword.code).toBe(422);
+
+      expect(invalidEmailPassword.message).toBe(
+        'Password is invalid.');
+    });
+
+  it(
+    `should return error for valid email and password without lowercase letter`,
+    () => {
+      const invalidEmailPassword = validateRegisterForm(
+        'itest@mail.com', 'P@SSWORD1!');
+
+      expect(invalidEmailPassword.code).toBe(422);
+
+      expect(invalidEmailPassword.message).toBe(
+        'Password is invalid.');
+    });
+
+  it(
+    `should return error for valid email 
+    and password shorter than 8 characters`,
+    () => {
+      const invalidEmailPassword = validateRegisterForm(
+        'itest@mail.com', 'P@ss1!');
+
+      expect(invalidEmailPassword.code).toBe(422);
+
+      expect(invalidEmailPassword.message).toBe(
+        'Password is invalid.');
+    });
 });
