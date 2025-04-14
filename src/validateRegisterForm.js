@@ -9,7 +9,7 @@
  */
 function validateRegisterForm(email, password) {
   // eslint-disable-next-line max-len
-  const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
+  const validPassword = /^(?=.*[A-ZА-ЯЁ])(?=.*[a-zа-яё])(?=.*\d)(?=.*[@#$%^&*!])[A-Za-zА-Яа-яЁё\d@#$%^&*!]{8,16}$/;
 
   // eslint-disable-next-line max-len
   const validEmailMask = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\./i);
