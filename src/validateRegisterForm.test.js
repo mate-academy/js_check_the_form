@@ -1,6 +1,21 @@
 'use strict';
 
 describe(`Function 'validateRegisterForm':`, () => {
+  const invaildEmail = {
+    code: 422,
+    message: 'Email is invalid.',
+  };
+
+  const invaildPassword = {
+    code: 422,
+    message: 'Password is invalid.',
+  };
+
+  const invaildPasswordEmail = {
+    code: 500,
+    message: 'Password and email are invalid.',
+  };
+
   const validateRegisterForm = require('./validateRegisterForm');
 
   it(`should be declared`, () => {
@@ -27,4 +42,53 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   // write more tests here
+  it('should return error for valid password'
+    + 'that hasn\'t short length', () => {
+    const result = validateRegisterForm('test@mail.com', 'P@1');
+
+    expect(result).toEqual(invaildPassword);
+  });
+
+  it('should return error for valid password'
+    + 'that hasn\'t too long length', () => {
+    const result = validateRegisterForm('test@mail.com', 'P@abc1abfnklqwers');
+
+    expect(result).toEqual(invaildPassword);
+  });
+
+  it('should have 1 digit 1 uppercase and 1 symbol', () => {
+    const result = validateRegisterForm('test@mail.com', 'testtest');
+
+    expect(result).toEqual(invaildPassword);
+  });
+
+  it('should email have only english letters', () => {
+    const result = validateRegisterForm('тест@mail.com', 'P@ss1word');
+
+    expect(result).toEqual(invaildEmail);
+  });
+
+  it('should email have @', () => {
+    const result = validateRegisterForm('testmail.com', 'P@ss1word');
+
+    expect(result).toEqual(invaildEmail);
+  });
+
+  it('shouldn\'t email have double dots', () => {
+    const result = validateRegisterForm('te..st@mail.com', 'P@ss1word');
+
+    expect(result).toEqual(invaildEmail);
+  });
+
+  it('shouldn\'t top domain\'s level start with .', () => {
+    const result = validateRegisterForm('test@.mail.com', 'P@ss1word');
+
+    expect(result).toEqual(invaildEmail);
+  });
+
+  it('should return 500 code if both are invalid', () => {
+    const result = validateRegisterForm('test@.mail.com', 'word');
+
+    expect(result).toEqual(invaildPasswordEmail);
+  });
 });
