@@ -18,7 +18,7 @@ Requirements for the valid email:
 
 - English letters(Aa-Zz).
 - Digits.
-- Characters: ! # $ % & ' * + - / = ? ^ _ ` { | } ~
+- Characters: ! # $ % & ' * + - / = ? ^ _ ` { } ~
 - Character `.` ( period, dot or fullstop) provided that it is not the first or last character and it will not come one after the other.
 - @ is required
 - top Level domain can not start with dot `.`
