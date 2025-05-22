@@ -42,7 +42,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it('should return error when password has no special character', () => {
-    const isValid = validateRegisterForm('test@mail.com', 'P@ssworda!');
+    const isValid = validateRegisterForm('test@mail.com', 'Passworda1');
 
     expect(isValid.code).toBe(422);
     expect(isValid.message).toBe('Password is invalid.');
