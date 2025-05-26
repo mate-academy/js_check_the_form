@@ -23,5 +23,15 @@
   },
   "mateAcademy": {
     "projectType": "javascript"
-  }
+  },
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YesupenkoVladislav/js_check_the_form.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/YesupenkoVladislav/js_check_the_form/issues"
+  },
+  "homepage": "https://github.com/YesupenkoVladislav/js_check_the_form#readme"
 }
