@@ -10,7 +10,6 @@
 
 function validateRegisterForm(email, password) {
   // eslint-disable-next-line max-len
-
   const validPassword
     = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
 

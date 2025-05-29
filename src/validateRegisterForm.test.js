@@ -32,7 +32,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   it(`should return error for valid email and password without number`, () => {
     const invalidPassword = validateRegisterForm(
       'test@mail.com',
-      'P@ssword'
+      'Password'
     );
 
     expect(invalidPassword.code).toBe(422);
