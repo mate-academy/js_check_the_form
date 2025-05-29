@@ -8,23 +8,60 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return object`, () => {
-    expect(typeof validateRegisterForm('test@mail.com', 'P@ssword1!'))
-      .toBe('object');
+    expect(
+      typeof validateRegisterForm(
+        'test@mail.com',
+        'P@ssword1!'
+      )
+    ).toBe('object');
   });
 
   it(`should return success message for the valid input`, () => {
-    const isValid = validateRegisterForm('test@mail.com', 'P@ssword1!');
+    const isValid = validateRegisterForm(
+      'test@mail.com',
+      'P@ssword@1!'
+    );
 
     expect(isValid.code).toBe(200);
-    expect(isValid.message).toBe('Email and password are valid.');
+
+    expect(isValid.message).toBe(
+      'Email and password are valid.'
+    );
   });
 
   it(`should return error for valid email and password without number`, () => {
-    const invalidPassword = validateRegisterForm('test@mail.com', 'P@ssword');
+    const invalidPassword = validateRegisterForm(
+      'test@mail.com',
+      'Password'
+    );
 
     expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe('Password is invalid.');
+
+    expect(invalidPassword.message).toBe(
+      'Password is invalid.'
+    );
   });
 
-  // write more tests here
+  it('should return error for valid password and email without symbol', () => {
+    const invalidEmail = validateRegisterForm(
+      'test@com',
+      'P@ssword1'
+    );
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it('should return error for invalid email and password', () => {
+    const invalidEmailAndPassword = validateRegisterForm(
+      'test@com',
+      'P@ssword'
+    );
+
+    expect(invalidEmailAndPassword.code).toBe(500);
+
+    expect(invalidEmailAndPassword.message).toBe(
+      'Password and email are invalid.'
+    );
+  });
 });
