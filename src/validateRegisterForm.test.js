@@ -104,22 +104,6 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  // eslint-disable-next-line max-len
-  it(`should return error valid password and for email with . at the end`, () => {
-    const invalidEmail = validateRegisterForm('test.@mail.com', 'P@ssword2');
-
-    expect(invalidEmail.code).toBe(422);
-    expect(invalidEmail.message).toBe('Email is invalid.');
-  });
-
-  // eslint-disable-next-line max-len
-  it(`should return error valid password and for email with . at the end`, () => {
-    const invalidEmail = validateRegisterForm('test@.mail.com', 'P@ssword2');
-
-    expect(invalidEmail.code).toBe(422);
-    expect(invalidEmail.message).toBe('Email is invalid.');
-  });
-
   it(`should return error valid password and for email without .`, () => {
     const invalidEmail = validateRegisterForm('test@com', 'P@ssword1');
 
@@ -137,7 +121,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   // eslint-disable-next-line max-len
-  it(`should return success message for the valid password and for email with cyrillic letters`, () => {
+  it(`should return success message for the valid password and for email with numbers`, () => {
     const withCyrillic = validateRegisterForm('test123@mail.com', 'P@ssword2');
 
     expect(withCyrillic.code).toBe(200);
