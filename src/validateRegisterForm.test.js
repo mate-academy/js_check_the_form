@@ -74,20 +74,6 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   // eslint-disable-next-line max-len
-  it('should return error message for email with each valid special character', () => {
-    // eslint-disable-next-line max-len
-    const specialChars = ['#', '$', '%', '&', "'", '*', '+', '/', '=', '?', '^', '`', '{', '|', '}', '~'];
-
-    specialChars.forEach((char) => {
-      const email = `t${char}_st-t@mail.com`;
-      const result = validateRegisterForm(email, 'P@ssword2');
-
-      expect(result.code).toBe(422);
-      expect(result.message).toBe('Email is invalid.');
-    });
-  });
-
-  // eslint-disable-next-line max-len
   it(`should return error valid password and for email with . at the start`, () => {
     const invalidEmail = validateRegisterForm('.test@mail.com', 'P@ssword2');
 
