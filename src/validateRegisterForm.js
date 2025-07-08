@@ -16,21 +16,24 @@ function validateRegisterForm(email, password) {
   // const validEmailMask = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\./i);
   const validEmailMask = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 
-  if (!email.match(validEmailMask) && password.match(validPassword)) {
-    return {
-      code: 422, message: 'Email is invalid.',
-    };
-  }
-
-  if (email.match(validEmailMask) && !password.match(validPassword)) {
-    return {
-      code: 422, message: 'Password is invalid.',
-    };
-  }
-
   if (!email.match(validEmailMask) && !password.match(validPassword)) {
     return {
-      code: 500, message: 'Password and email are invalid.',
+      code: 500,
+      message: 'Password and email are invalid.',
+    };
+  }
+
+  if (!email.match(validEmailMask)) {
+    return {
+      code: 422,
+      message: 'Email is invalid.',
+    };
+  }
+
+  if (!password.match(validPassword)) {
+    return {
+      code: 422,
+      message: 'Password is invalid.',
     };
   }
 
