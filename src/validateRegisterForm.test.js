@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 'use strict';
 
 describe(`Function 'validateRegisterForm':`, () => {
@@ -26,5 +27,52 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it(`should return error for valid password and invalid email`, () => {
+    const invalidEmail = validateRegisterForm('test@com', 'P@ssword1');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error when both email and password are invalid`, () => {
+    const invalidBoth = validateRegisterForm('invalid@', 'pass');
+
+    expect(invalidBoth.code).toBe(500);
+    expect(invalidBoth.message).toBe('Password and email are invalid.');
+  });
+
+  it(`should return error for password without special character`, () => {
+    const result = validateRegisterForm('test@mail.com', 'Password1');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password without uppercase letter`, () => {
+    const result = validateRegisterForm('test@mail.com', 'p@ssword1');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password with less than 8 characters`, () => {
+    const result = validateRegisterForm('test@mail.com', 'P@1a');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password with more than 16 characters`, () => {
+    const result = validateRegisterForm('test@mail.com', 'P@ssword1IsTooLong!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return valid response for email with allowed special characters`, () => {
+    const result = validateRegisterForm('user+tag@mail-domain.com', 'A@bcd123!');
+
+    expect(result.code).toBe(200);
+    expect(result.message).toBe('Email and password are valid.');
+  });
 });
