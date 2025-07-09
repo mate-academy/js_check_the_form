@@ -121,5 +121,3 @@ describe(`Function 'validateRegisterForm':`, () => {
     });
   });
 });
-
-
