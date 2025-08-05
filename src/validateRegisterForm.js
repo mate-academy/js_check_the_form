@@ -22,13 +22,17 @@ function validateRegisterForm(email, password) {
     : false;
 
   const emailTopDomain = function() {
-    const index = email.lastIndexOf(isValidEmail[2]) + isValidEmail[2].length;
-    const isStartWithDot = email.startsWith('.', index + 1);
-    const isEndWithDot = email.endsWith('.');
-    const isCorrect = !isStartWithDot && !isEndWithDot;
+    const doHaveDomain = isValidEmail[2];
 
-    if (!isCorrect) {
-      isValidEmail = false;
+    if (doHaveDomain) {
+      const index = email.lastIndexOf(isValidEmail[2]) + isValidEmail[2].length;
+      const isStartWithDot = email.startsWith('.', index + 1);
+      const isEndWithDot = email.endsWith('.');
+      const isCorrect = !isStartWithDot && !isEndWithDot;
+
+      if (!isCorrect) {
+        isValidEmail = false;
+      }
     }
   };
 
