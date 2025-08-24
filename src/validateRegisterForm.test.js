@@ -26,5 +26,18 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it(`should return error for valid password and wrong email`, () => {
+    const invalidEmail = validateRegisterForm('testmail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for invalid password and email`, () => {
+    const invalidData = validateRegisterForm('testmail.com', 'P@ssword');
+
+    expect(invalidData.code).toBe(500);
+    expect(invalidData.message).toBe('Password and email are invalid.');
+  });
+
 });
