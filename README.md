@@ -1,11 +1,11 @@
 # QA: Validate form
 
-Write tests for the function `validateRegisterForm`, which takes two strings `password` and `email`, and returns an object with a response that contain status code and message.
+Write tests for the function `validateRegisterForm`, which takes two strings `email` and `password`, and returns an object with a response that contain status code and message.
 
-If all entered data is valid object contains status code `200` and message `Email and password are valid.`.  
-If entered email is invalid object contains status code `422` and message `Email is invalid.`.  
-If entered password is invalid object contains status code `422` and message `Password is invalid.`.  
-If entered password and email are invalid object contains status code `500` and message `Password and email are invalid.`.  
+If all entered data is valid object contains status code `200` and message `Email and password are valid.`.
+If entered email is invalid object contains status code `422` and message `Email is invalid.`.
+If entered password is invalid object contains status code `422` and message `Password is invalid.`.
+If entered password and email are invalid object contains status code `500` and message `Password and email are invalid.`.
 
 Requirements for the valid password:
 
@@ -26,7 +26,7 @@ Requirements for the valid email:
 - an email should not be start with `.`
 - double dots are not allowed
 
-The function does not check the uniqueness of the email and length of email (it made by another functions).  
+The function does not check the uniqueness of the email and length of email (it made by another functions).
 
 Examples:
 
@@ -37,7 +37,7 @@ validateRegisterForm('test@com', 'P@ssword1') === { code: 422, message: 'Email i
 validateRegisterForm('test@com', 'ssword1') === { code: 500, message: 'Password and email are invalid.', }
 ```
 
-`Hint`: focus on the most priority and realistic cases, do not focus on edge cases.  
+`Hint`: focus on the most priority and realistic cases, do not focus on edge cases.
 
 ---
 
