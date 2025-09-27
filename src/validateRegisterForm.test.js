@@ -7,61 +7,135 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(validateRegisterForm).toBeInstanceOf(Function);
   });
 
-  it(`should return object`, () => {
-    expect(typeof validateRegisterForm('test@mail.com', 'P@ssword1!'))
-      .toBe('object');
+  it(`should return an object with code and message`, () => {
+    const result = validateRegisterForm('test@mail.com', 'P@ssword1!');
+    expect(result).toHaveProperty('code');
+    expect(result).toHaveProperty('message');
   });
 
-  it(`should return success message for the valid input`, () => {
-    const isValid = validateRegisterForm('test@mail.com', 'P@ssword1!');
+  describe('Password validation', () => {
+    it('should return 422 if password missing special character', () => {
+      expect(validateRegisterForm('test@mail.com', 'Password1')).toEqual({
+        code: 422,
+        message: 'Password is invalid.',
+      });
+    });
 
-    expect(isValid.code).toBe(200);
-    expect(isValid.message).toBe('Email and password are valid.');
+    it('should return 422 if password missing uppercase letter', () => {
+      expect(validateRegisterForm('test@mail.com', 'password1!')).toEqual({
+        code: 422,
+        message: 'Password is invalid.',
+      });
+    });
+
+    it('should return 200 for valid password with Cyrillic letters', () => {
+      expect(validateRegisterForm('test@mail.com', 'ПарольA1!')).toEqual({
+        code: 200,
+        message: 'Email and password are valid.',
+      });
+    });
+
+    it('should return 422 if password too short (<8)', () => {
+      expect(validateRegisterForm('test@mail.com', 'A1$aB')).toEqual({
+        code: 422,
+        message: 'Password is invalid.',
+      });
+    });
+
+    it('should return 422 if password too long (>16)', () => {
+      expect(validateRegisterForm('test@mail.com', 'A1$aaaaaaaaaaaaaaa')).toEqual({
+        code: 422,
+        message: 'Password is invalid.',
+      });
+    });
+
+    it('should return 200 for password of length 8 and 16', () => {
+      expect(validateRegisterForm('test@mail.com', 'A1$aBcdE')).toEqual({
+        code: 200,
+        message: 'Email and password are valid.',
+      });
+      expect(validateRegisterForm('test@mail.com', 'A1$aBcdEfghijklM')).toEqual({
+        code: 200,
+        message: 'Email and password are valid.',
+      });
+    });
   });
 
-  it(`should return error for valid email and password without number`, () => {
-    const invalidPassword = validateRegisterForm('test@mail.com', 'P@ssword');
+  describe('Email validation', () => {
+    it('should return 200 for emails with allowed specials in local part', () => {
+      expect(validateRegisterForm('user+tag@mail.com', 'P@ssword1!')).toEqual({
+        code: 200,
+        message: 'Email and password are valid.',
+      });
+      expect(validateRegisterForm("user!name@mail.com", 'P@ssword1!')).toEqual({
+        code: 200,
+        message: 'Email and password are valid.',
+      });
+    });
 
-    expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe('Password is invalid.');
+    it('should return 422 for email starting with dot', () => {
+      expect(validateRegisterForm('.user@mail.com', 'P@ssword1!')).toEqual({
+        code: 422,
+        message: 'Email is invalid.',
+      });
+    });
+
+    it('should return 422 for email ending with dot', () => {
+      expect(validateRegisterForm('user.@mail.com', 'P@ssword1!')).toEqual({
+        code: 422,
+        message: 'Email is invalid.',
+      });
+    });
+
+    it('should return 422 for TLD/domain starting with dot', () => {
+      expect(validateRegisterForm('user@.com', 'P@ssword1!')).toEqual({
+        code: 422,
+        message: 'Email is invalid.',
+      });
+    });
+
+    it('should return 422 for email with double dots', () => {
+      expect(validateRegisterForm('user@mail..com', 'P@ssword1!')).toEqual({
+        code: 422,
+        message: 'Email is invalid.',
+      });
+    });
+
+    it('should return 422 for missing @ symbol', () => {
+      expect(validateRegisterForm('user.mail.com', 'P@ssword1!')).toEqual({
+        code: 422,
+        message: 'Email is invalid.',
+      });
+    });
   });
 
-  // Invalid email only
-  it(`should return error for invalid email and valid password`, () => {
-    const invalidEmail = validateRegisterForm('test@com', 'P@ssword1!');
-    expect(invalidEmail.code).toBe(422);
-    expect(invalidEmail.message).toBe('Email is invalid.');
-  });
+  describe('Combined validation', () => {
+    it('should return 500 if both email and password are invalid', () => {
+      expect(validateRegisterForm('user.mail.com', 'password')).toEqual({
+        code: 500,
+        message: 'Password and email are invalid.',
+      });
+    });
 
-  it(`should return error for invalid email with double dots`, () => {
-    const invalidEmail = validateRegisterForm('user..name@mail.com', 'Abc123$def');
-    expect(invalidEmail.code).toBe(422);
-    expect(invalidEmail.message).toBe('Email is invalid.');
-  });
+    it('should return 422 if only password is invalid', () => {
+      expect(validateRegisterForm('test@mail.com', 'password')).toEqual({
+        code: 422,
+        message: 'Password is invalid.',
+      });
+    });
 
-  // Both email and password invalid
-  it(`should return error when both email and password are invalid`, () => {
-    const bothInvalid = validateRegisterForm('test@com', 'ssword1');
-    expect(bothInvalid.code).toBe(500);
-    expect(bothInvalid.message).toBe('Password and email are invalid.');
-  });
+    it('should return 422 if only email is invalid', () => {
+      expect(validateRegisterForm('user.mail.com', 'P@ssword1!')).toEqual({
+        code: 422,
+        message: 'Email is invalid.',
+      });
+    });
 
-  it(`should return error when both email and password are clearly invalid`, () => {
-    const bothInvalid = validateRegisterForm('user..mail', 'abc');
-    expect(bothInvalid.code).toBe(500);
-    expect(bothInvalid.message).toBe('Password and email are invalid.');
-  });
-
-  // Optional: password length
-  it(`should return error if password is too short`, () => {
-    const shortPassword = validateRegisterForm('test@mail.com', 'A1$a');
-    expect(shortPassword.code).toBe(422);
-    expect(shortPassword.message).toBe('Password is invalid.');
-  });
-
-  it(`should return error if password is too long`, () => {
-    const longPassword = validateRegisterForm('test@mail.com', 'A1$aaaaaaaaaaaaaaa'); // 17 chars
-    expect(longPassword.code).toBe(422);
-    expect(longPassword.message).toBe('Password is invalid.');
+    it('should return 200 if both email and password are valid', () => {
+      expect(validateRegisterForm('test@mail.com', 'P@ssword1!')).toEqual({
+        code: 200,
+        message: 'Email and password are valid.',
+      });
+    });
   });
 });
