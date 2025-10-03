@@ -69,7 +69,7 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it('should return error for invalid email format', () => {
+  it('should return error when email format is invalid', () => {
     const invalidEmail = validateRegisterForm('testmail.com', 'P@ssword1!');
 
     expect(invalidEmail.code).toBe(422);
