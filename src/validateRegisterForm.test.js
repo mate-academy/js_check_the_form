@@ -9,8 +9,9 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return object`, () => {
-    expect(typeof validateRegisterForm('test@mail.com', 'P@ssword1!'))
-      .toBe('object');
+    expect(typeof validateRegisterForm('test@mail.com', 'P@ssword1!')).toBe(
+      'object'
+    );
   });
 
   it(`should return success message for the valid input`, () => {
@@ -35,7 +36,10 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for valid email and password.length > 16`, () => {
-    const invalidPassword = validateRegisterForm('test@mail.com', 'P@sswordPas2Word122');
+    const invalidPassword = validateRegisterForm(
+      'test@mail.com',
+      'P@sswordPas2Word122'
+    );
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Password is invalid.');
@@ -80,6 +84,16 @@ describe(`Function 'validateRegisterForm':`, () => {
     const invalidEmailAndPassword = validateRegisterForm('test@com', 'ssword1');
 
     expect(invalidEmailAndPassword.code).toEqual(500);
-    expect(invalidEmailAndPassword.message).toEqual('Password and email are invalid.');
+
+    expect(invalidEmailAndPassword.message).toEqual(
+      'Password and email are invalid.'
+    );
+  });
+
+  it(`should return success for complex valid password with multiple specials and digits`, () => {
+    const result = validateRegisterForm('some@mail.com', 'P@ssw0rd!123$');
+
+    expect(result.code).toBe(200);
+    expect(result.message).toBe('Email and password are valid.');
   });
 });
