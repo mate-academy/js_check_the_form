@@ -2,39 +2,59 @@
 
 /**
  * @param {string} email
- *
  * @param {string} password
- *
  * @returns {object}
  */
 function validateRegisterForm(email, password) {
-  // eslint-disable-next-line max-len
-  const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
+  // Regex dla hasła (rozbite na części)
+  const reNum = '(?=.*\\d)';             
+  const reLower = '(?=.*[a-z])';         
+  const reUpper = '(?=.*[A-Z])';         
+  const reSpecial = '(?=.*[^a-zA-Z0-9])'; 
+  const reNoSpace = '(?!.*\\s)';         
+  const reLen = '.{8,16}';               
 
-  // eslint-disable-next-line max-len
-  const validEmailMask = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\./i);
+  const validPassword = new RegExp(
+    '^' + reNum + reLower + reUpper + reSpecial + reNoSpace + reLen + '$'
+  );
 
-  if (!email.match(validEmailMask) && password.match(validPassword)) {
-    return {
-      code: 422, message: 'Email is invalid.',
-    };
+  // Regex dla emaila (części)
+  const reLocal = '([\\w-]+(?:\\.[\\w-]+)*)';
+  const reDomain = '([\\w-]+(?:\\.[\\w-]+)*)';
+  const reAt = '@';
+  const emailRegex = new RegExp('^' + reLocal + reAt + reDomain + '$', 'i');
+
+  const isEmailValid = email.match(emailRegex);
+  const isPasswordValid = password.match(validPassword);
+
+  // Dodatkowe reguły dla emaila
+  let emailExtraValid = true;
+  if (isEmailValid) {
+    const [local, domain] = email.split('@');
+    if (
+      local.startsWith('.') ||
+      domain.startsWith('.') ||
+      email.includes('..')
+    ) {
+      emailExtraValid = false;
+    }
   }
 
-  if (email.match(validEmailMask) && !password.match(validPassword)) {
-    return {
-      code: 422, message: 'Password is invalid.',
-    };
+  // Walidacja wyników
+  if (!isEmailValid || !emailExtraValid) {
+    if (isPasswordValid) {
+      return { code: 422, message: 'Email is invalid.' };
+    } else {
+      return { code: 500, message: 'Password and email are invalid.' };
+    }
   }
 
-  if (!email.match(validEmailMask) && !password.match(validPassword)) {
-    return {
-      code: 500, message: 'Password and email are invalid.',
-    };
+  if (!isPasswordValid) {
+    return { code: 422, message: 'Password is invalid.' };
   }
 
-  return {
-    code: 200, message: 'Email and password are valid.',
-  };
+  return { code: 200, message: 'Email and password are valid.' };
 }
 
 module.exports = validateRegisterForm;
+
