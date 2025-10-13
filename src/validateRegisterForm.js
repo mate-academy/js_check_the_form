@@ -7,19 +7,20 @@
  */
 function validateRegisterForm(password, email) {
   // Password regex
-  const n = '(?=.*\\d)';                       // number
-  const l = '(?=.*[a-zA-Z\u0400-\u04FF])';     // lowercase Latin+Cyrillic
-  const u = '(?=.*[A-Z\u0400-\u04FF])';        // uppercase Latin+Cyrillic
-  const s = '(?=.*[^\\da-zA-Z\u0400-\u04FF])'; // special excluding letters/digits
-  const ns = '(?!.*\\s)';                       // no spaces
-  const len = '.{8,16}';                        // length 8-16
+  const n = '(?=.*\\d)';
+  const l = '(?=.*[a-zA-Z\u0400-\u04FF])';
+  const u = '(?=.*[A-Z\u0400-\u04FF])';
+  const s = '(?=.*[^\\da-zA-Z\u0400-\u04FF])';
+  const ns = '(?!.*\\s)';
+  const len = '.{8,16}';
 
-  const validPassword = new RegExp('^' + n + l + u + s + ns + len + '$', 'u');
+  const pwdPattern = '^' + n + l + u + s + ns + len + '$';
+  const validPassword = new RegExp(pwdPattern, 'u');
 
-  // Email regex (local-part expanded)
-  const localChars = "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+"; 
+  // Email regex (local-part + domain)
+  const localChars = "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+";
   const loc = '(' + localChars + '(?:\\.' + localChars + ')*)';
-  const domLabel = '[A-Za-z0-9-]+'; // domain labels
+  const domLabel = '[A-Za-z0-9-]+';
   const dom = '(' + domLabel + '(?:\\.' + domLabel + ')+)';
   const at = '@';
   const validEmailMask = new RegExp('^' + loc + at + dom + '$', 'i');
@@ -27,7 +28,7 @@ function validateRegisterForm(password, email) {
   const isEmailValid = validEmailMask.test(email);
   const isPasswordValid = validPassword.test(password);
 
-  // Extra dot rules for email
+  // Extra dot rules
   let emailExtraValid = true;
   if (isEmailValid) {
     const parts = email.split('@');
