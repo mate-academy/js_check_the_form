@@ -6,13 +6,13 @@
  * @returns {object}
  */
 function validateRegisterForm(email, password) {
-  // Regex dla hasła (rozbite na części)
-  const reNum = '(?=.*\\d)';             
-  const reLower = '(?=.*[a-z])';         
-  const reUpper = '(?=.*[A-Z])';         
-  const reSpecial = '(?=.*[^a-zA-Z0-9])'; 
-  const reNoSpace = '(?!.*\\s)';         
-  const reLen = '.{8,16}';               
+  // Regex dla hasła (częściowe rozbicie)
+  const reNum = '(?=.*\\d)';
+  const reLower = '(?=.*[a-z])';
+  const reUpper = '(?=.*[A-Z])';
+  const reSpecial = '(?=.*[^a-zA-Z0-9])';
+  const reNoSpace = '(?!.*\\s)';
+  const reLen = '.{8,16}';
 
   const validPassword = new RegExp(
     '^' + reNum + reLower + reUpper + reSpecial + reNoSpace + reLen + '$'
@@ -20,12 +20,12 @@ function validateRegisterForm(email, password) {
 
   // Regex dla emaila (części)
   const reLocal = '([\\w-]+(?:\\.[\\w-]+)*)';
-  const reDomain = '([\\w-]+(?:\\.[\\w-]+)*)';
+  const reDomain = '([\\w-]+(?:\\.[\\w-]+)+)'; // + wymusza co najmniej jedną kropkę
   const reAt = '@';
   const emailRegex = new RegExp('^' + reLocal + reAt + reDomain + '$', 'i');
 
-  const isEmailValid = email.match(emailRegex);
-  const isPasswordValid = password.match(validPassword);
+  const isEmailValid = emailRegex.test(email);
+  const isPasswordValid = validPassword.test(password);
 
   // Dodatkowe reguły dla emaila
   let emailExtraValid = true;
@@ -57,4 +57,5 @@ function validateRegisterForm(email, password) {
 }
 
 module.exports = validateRegisterForm;
+
 
