@@ -7,18 +7,18 @@
  */
 function validateRegisterForm(email, password) {
   // Password regex: krótkie zmienne
-  const n = '(?=.*\\d)';         // number
-  const l = '(?=.*[a-z])';       // lowercase
-  const u = '(?=.*[A-Z])';       // uppercase
-  const s = '(?=.*[^a-zA-Z0-9])';// special char
-  const ns = '(?!.*\\s)';        // no spaces
-  const len = '.{8,16}';         // length 8-16
+  const n = '(?=.*\\d)';
+  const l = '(?=.*[a-z])';
+  const u = '(?=.*[A-Z])';
+  const s = '(?=.*[^a-zA-Z0-9])';
+  const ns = '(?!.*\\s)';
+  const len = '.{8,16}';
 
   const validPassword = new RegExp('^' + n + l + u + s + ns + len + '$');
 
   // Email regex: krótkie zmienne
   const loc = '([\\w-]+(?:\\.[\\w-]+)*)';
-  const dom = '([\\w-]+(?:\\.[\\w-]+)+)'; // wymusza co najmniej jedną kropkę
+  const dom = '([\\w-]+(?:\\.[\\w-]+)+)';
   const at = '@';
   const validEmailMask = new RegExp('^' + loc + at + dom + '$', 'i');
 
@@ -28,8 +28,15 @@ function validateRegisterForm(email, password) {
   // Dodatkowe reguły dla emaila
   let emailExtraValid = true;
   if (isEmailValid) {
-    const [local, domain] = email.split('@');
-    if (local.startsWith('.') || domain.startsWith('.') || email.includes('..')) {
+    const parts = email.split('@');
+    const local = parts[0];
+    const domain = parts[1];
+
+    const localInvalid = local.startsWith('.');
+    const domainInvalid = domain.startsWith('.');
+    const dotsInvalid = email.includes('..');
+
+    if (localInvalid || domainInvalid || dotsInvalid) {
       emailExtraValid = false;
     }
   }
@@ -51,5 +58,4 @@ function validateRegisterForm(email, password) {
 }
 
 module.exports = validateRegisterForm;
-
 
