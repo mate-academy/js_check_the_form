@@ -85,12 +85,12 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.message).toBe('Email and password are valid.');
   });
 
-  it(`should return error when we have characters # $ % &`, () => {
-    const invalidPassword = validateRegisterForm('t#es$tmyk%&@mail.com',
-      'P@ssword1!');
+  it(`should pass if password containing Cyrillic letters`, () => {
+    const invalidPassword = validateRegisterForm('test@mail.com.',
+      'Passwпароль1@');
 
-    expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe('Email is invalid.');
+    expect(invalidPassword.code).toBe(200);
+    expect(invalidPassword.message).toBe('Email and password are valid.');
   });
 
   it(`should return error when double dots added`, () => {
@@ -103,6 +103,14 @@ describe(`Function 'validateRegisterForm':`, () => {
 
   it(`should return error when email be start with .`, () => {
     const invalidPassword = validateRegisterForm('.test@mail.com',
+      'P@ssword1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error when email ends with .`, () => {
+    const invalidPassword = validateRegisterForm('test/@mail.com.',
       'P@ssword1!');
 
     expect(invalidPassword.code).toBe(422);
