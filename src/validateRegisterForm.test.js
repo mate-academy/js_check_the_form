@@ -86,7 +86,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should pass if password containing Cyrillic letters`, () => {
-    const invalidPassword = validateRegisterForm('test@mail.com.',
+    const invalidPassword = validateRegisterForm('test@mail.com',
       'Passwпароль1@');
 
     expect(invalidPassword.code).toBe(200);
