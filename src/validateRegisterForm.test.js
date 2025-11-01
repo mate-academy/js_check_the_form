@@ -124,6 +124,13 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.message).toBe("Email and password are valid.");
   });
 
+   it(`email error with the local-part(username) ends a dot before @ symbol`, () => {
+     const isValid = validateRegisterForm("test.@mail.com.", "P@ssword1!");
+
+     expect(isValid.code).toBe(422);
+     expect(isValid.message).toBe("Email is invalid.");
+   });
+
   it(`password with Cyrillic letters`, () => {
     const invalidPassword = validateRegisterForm(
       "test@mail.com",
