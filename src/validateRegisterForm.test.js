@@ -109,4 +109,28 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.code).toBe(500);
     expect(isValid.message).toBe("Password and email are invalid.");
   });
+
+  it(`email error with dot at the start of top-level domain`, () => {
+    const isValid = validateRegisterForm("test@.mail.com", "P@ssword1!");
+
+    expect(isValid.code).toBe(422);
+    expect(isValid.message).toBe("Email is invalid.");
+  });
+
+  it(`success with an email that ends with a dot `, () => {
+    const isValid = validateRegisterForm("test@mail.com.", "P@ssword1!");
+
+    expect(isValid.code).toBe(200);
+    expect(isValid.message).toBe("Email and password are valid.");
+  });
+
+  it(`password with Cyrillic letters`, () => {
+    const invalidPassword = validateRegisterForm(
+      "test@mail.com",
+      "YЖ@sswыэъфйяord1"
+    );
+
+    expect(invalidPassword.code).toBe(200);
+    expect(invalidPassword.message).toBe("Email and password are valid.");
+  });
 });
