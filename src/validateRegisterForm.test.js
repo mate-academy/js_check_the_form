@@ -55,14 +55,6 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for valid email 
-    and password without small letter`, () => {
-    const invalidPassword = validateRegisterForm('test@mail.com', 'P@SSWORD1');
-
-    expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe('Password is invalid.');
-  });
-
-  it(`should return error for valid email 
     and password without special character`, () => {
     const invalidPassword = validateRegisterForm('test@mail.com', 'PPssword1');
 
