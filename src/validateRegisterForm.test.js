@@ -32,7 +32,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   it(`should return error for invalid email and valid password`, () => {
     const invalidEmail = validateRegisterForm(
       'test@com',
-      'P@ssword1'
+      'P@ssword1!'
     );
 
     expect(invalidEmail.code).toBe(422);
@@ -113,4 +113,34 @@ describe(`Function 'validateRegisterForm':`, () => {
       expect(invalidDot.message).toBe('Email is invalid.');
     }
   );
+
+  it('should accept valid password containing Cyrillic letters', () => {
+    const result = validateRegisterForm(
+      'valid@email.com',
+      'P@ssword!1A'
+    );
+
+    expect(result.code).toBe(200);
+    expect(result.message).toBe('Email and password are valid.');
+  });
+
+  it('should return error for email starting with a dot', () => {
+    const result = validateRegisterForm(
+      '.test@example.com',
+      'P@ssword1!'
+    );
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it('should return error for email with consecutive dots', () => {
+    const result = validateRegisterForm(
+      'test..dots@example.com',
+      'P@ssword1!'
+    );
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
 });
