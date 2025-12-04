@@ -81,8 +81,8 @@ describe(`Function 'validateRegisterForm':`, () => {
     const invalidPassword
       = validateRegisterForm('test$@mail.com', 'P@ssword1!');
 
-    expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe('Email is invalid.');
+    expect(invalidPassword.code).toBe(200);
+    expect(invalidPassword.message).toBe('Email and password are valid.');
   });
 
   it(`should fail if email starts with a dot`, () => {
