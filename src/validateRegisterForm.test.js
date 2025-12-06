@@ -26,21 +26,24 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it('should accept password with Cyrillic letters', () => {
+  it(`should return success message for valid email 
+    and password with Cyrillic letters`, () => {
     const result = validateRegisterForm('test@mail.com', 'ПарольAa1!');
 
     expect(result.code).toBe(200);
     expect(result.message).toBe('Email and password are valid.');
   });
 
-  it('should not accept password with length < 8 characters ', () => {
+  it(`should return error for valid email 
+    and password with length < 8 characters`, () => {
     const result = validateRegisterForm('test@mail.com', 'ПльAa1!');
 
     expect(result.code).toBe(422);
     expect(result.message).toBe('Password is invalid.');
   });
 
-  it('should not accept password with length > 16 characters ', () => {
+  it(`should return error for valid email 
+    and password with length > 16 characters`, () => {
     const result = validateRegisterForm('test@mail.com', 'dfwfwefcwqcwcwAa1!');
 
     expect(result.code).toBe(422);
@@ -63,48 +66,48 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it(`should return error for valid password and email
-    with Cyrillic letters`, () => {
+  it(`should return error for email
+    with Cyrillic letters and valid password`, () => {
     const invalidEmail = validateRegisterForm('tesт@mail.com', 'Password1!');
 
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email
-    with not allowed character`, () => {
+  it(`should return error for email with not allowed character 
+    and valid password`, () => {
     const invalidEmail = validateRegisterForm('test]@mail.com', 'Password1!');
 
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email
-    without required @`, () => {
+  it(`should return error for email
+    without required '@' and valid password`, () => {
     const invalidEmail = validateRegisterForm('test.mail.com', 'Password1!');
 
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email
-    with dot in the start of the first part of it`, () => {
+  it(`should return error for email with dot 
+    in the start of the first part of it and valid password`, () => {
     const invalidEmail = validateRegisterForm('.test@mail.com', 'Password1!');
 
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email
-    with dot in the end of the first part of it`, () => {
+  it(`should return error for email 
+    with dot in the end of the first part of it and valid password`, () => {
     const invalidEmail = validateRegisterForm('test.@mail.com', 'Password1!');
 
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email
-    with double dot in the first part of it`, () => {
+  it(`should return error for email
+    with double dot in the first part of it and valid password`, () => {
     const invalidEmail = validateRegisterForm(
       'test..test@mail.com',
       'Password1!'
@@ -114,15 +117,15 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return error for valid password and email
-    with dot in the start of top Level domain`, () => {
+  it(`should return error for email with dot 
+    in the start of top Level domain and valid password`, () => {
     const invalidEmail = validateRegisterForm('test@.mail.com', 'Password1!');
 
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Email is invalid.');
   });
 
-  it(`should return success message for the whole invalid input`, () => {
+  it(`should return error when both password and email are invalid`, () => {
     const isValid = validateRegisterForm('test@com', 'ssword1');
 
     expect(isValid.code).toBe(500);
