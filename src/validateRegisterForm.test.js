@@ -19,6 +19,13 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.message).toBe('Email and password are valid.');
   });
 
+  it(`should return success for valid password with Cyrillic letters`, () => {
+    const result = validateRegisterForm('test@mail.com', 'ValidПароль1!');
+
+    expect(result.code).toBe(200);
+    expect(result.message).toBe('Email and password are valid.');
+});
+
   it(`should return error for valid email and password without number`, () => {
     const invalidPassword = validateRegisterForm('test@mail.com', 'P@ssword');
 
