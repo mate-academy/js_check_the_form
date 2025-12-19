@@ -39,4 +39,56 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidData.code).toBe(500);
     expect(invalidData.message).toBe('Password and email are invalid.');
   });
+
+  it(`should return error for password shorter than 8 characters`, () => {
+    const result = validateRegisterForm('test@mail.com', 'P@s1a');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password longer than 16 characters`, () => {
+    const result = validateRegisterForm(
+      'test@mail.com',
+      'P@ssword1234567890'
+    );
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password without uppercase letter`, () => {
+    const result = validateRegisterForm('test@mail.com', 'p@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password without special character`, () => {
+    const result = validateRegisterForm('test@mail.com', 'Password1');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for email starting with dot`, () => {
+    const result = validateRegisterForm('.test@mail.com', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error if email ends with a dot`, () => {
+    const result = validateRegisterForm('testexample.com.', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for email with consecutive dots`, () => {
+    const result = validateRegisterForm('test..mail@mail.com', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
 });
