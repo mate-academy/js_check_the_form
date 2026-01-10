@@ -107,7 +107,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should accept email with allowed special characters`, () => {
-    const result = validateRegisterForm('test-alias@mail.com', 'P@ssword1!');
+    const result = validateRegisterForm('test+alias@mail.com', 'P@ssword1!');
 
     expect(result.code).toBe(200);
     expect(result.message).toBe('Email and password are valid.');
