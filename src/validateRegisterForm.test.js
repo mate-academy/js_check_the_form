@@ -98,4 +98,26 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(result.code).toBe(422);
     expect(result.message).toBe('Email is invalid.');
   });
+
+  it(`should accept email with digits`, () => {
+    const result = validateRegisterForm('test1@mail.com', 'P@ssword1!');
+
+    expect(result.code).toBe(200);
+    expect(result.message).toBe('Email and password are valid.');
+  });
+
+  it(`should accept email with allowed special characters`, () => {
+    const result = validateRegisterForm('test-alias@mail.com', 'P@ssword1!');
+
+    expect(result.code).toBe(200);
+    expect(result.message).toBe('Email and password are valid.');
+  });
+
+  it(`should return error for email
+      with top-level domain starting with dot`, () => {
+    const result = validateRegisterForm('a@.b.c', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
 });
