@@ -29,6 +29,16 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe("Password is invalid.");
   });
 
+  it(`should return error for valid email and password with cyrillic letters`, () => {
+    const invalidPassword = validateRegisterForm(
+      "test@mail.com",
+      "Пар@23OS!оль",
+    );
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe("Password is invalid.");
+  });
+
   it(`should return error for valid email and password without special character`, () => {
     const invalidPassword = validateRegisterForm("test@mail.com", "P1ssword");
 
