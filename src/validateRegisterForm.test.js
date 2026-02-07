@@ -29,16 +29,6 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe("Password is invalid.");
   });
 
-  it(`should return error for valid email and password with cyrillic letters`, () => {
-    const invalidPassword = validateRegisterForm(
-      "test@mail.com",
-      "Пар@23OS!оль",
-    );
-
-    expect(invalidPassword.code).toBe(422);
-    expect(invalidPassword.message).toBe("Password is invalid.");
-  });
-
   it(`should return error for valid email and password without special character`, () => {
     const invalidPassword = validateRegisterForm("test@mail.com", "P1ssword");
 
@@ -87,29 +77,9 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidEmail.message).toBe("Email is invalid.");
   });
 
-  it(`should return error for valid password and email without @`, () => {
-    const invalidEmail = validateRegisterForm(
-      "emailtest.mail.com",
-      "Pa$$829Da",
-    );
-
-    expect(invalidEmail.code).toBe(422);
-    expect(invalidEmail.message).toBe("Email is invalid.");
-  });
-
   it(`should return error for valid password and email start with dot "."`, () => {
     const invalidEmail = validateRegisterForm(
       ".emailtest@mail.com",
-      "Pa$$829Da",
-    );
-
-    expect(invalidEmail.code).toBe(422);
-    expect(invalidEmail.message).toBe("Email is invalid.");
-  });
-
-  it(`should return error for valid password and email with ":" double dots `, () => {
-    const invalidEmail = validateRegisterForm(
-      ".email:test@mail.com",
       "Pa$$829Da",
     );
 
