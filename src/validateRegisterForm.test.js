@@ -29,7 +29,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   // write more tests here
 
   it(`should return error for invalid email and valid password`, () => {
-    const invalidPassword = validateRegisterForm('test@com', 'P@ssword1');
+    const invalidPassword = validateRegisterForm('test@com', 'P@ssword1!');
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Email is invalid.');
@@ -51,6 +51,33 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
+  it(`should return error for a short password`, () => {
+    const invalidPassword = validateRegisterForm(
+      'test@mail.com', 'A1!d'
+    );
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for a password missing an uppercase letter`, () => {
+    const invalidPassword = validateRegisterForm(
+      'test@mail.com', 'password1!'
+    );
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for a password missing a special character`, () => {
+    const invalidPassword = validateRegisterForm(
+      'test@mail.com', 'Password123'
+    );
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
   it(`should return error for an email that starts with a dot`, () => {
     const invalidPassword = validateRegisterForm(
       '.test@mail.com', 'P@ssword1!'
@@ -58,6 +85,16 @@ describe(`Function 'validateRegisterForm':`, () => {
 
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Email is invalid.');
+  });
+
+  it(`should return success message for an email
+    that ends with a dot`, () => {
+    const invalidPassword = validateRegisterForm(
+      'test@mail.com.', 'P@ssword1!'
+    );
+
+    expect(invalidPassword.code).toBe(200);
+    expect(invalidPassword.message).toBe('Email and password are valid.');
   });
 
   it(`should return error for an email that misses @`, () => {
@@ -88,18 +125,15 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Email is invalid.');
   });
 
-  // I'm confused, are cyrillic characters allowed for password?
-  // Task description says they're allowed
+  it(`should return error for a password
+    created using cyrillic characters`, () => {
+    const invalidPassword = validateRegisterForm(
+      'test@mail.com', 'М1йПароль1!'
+    );
 
-  // it(`should return success message for a password
-  //   created using cyrillic characters`, () => {
-  //   const invalidPassword = validateRegisterForm(
-  //     'test@mail.com', 'М1йПароль1!'
-  //   );
-
-  //   expect(invalidPassword.code).toBe(200);
-  //   expect(invalidPassword.message).toBe('Email and password are valid.');
-  // });
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
 
   // possibly more tests needed
   // although the task gives a hint not to focus on edge cases
