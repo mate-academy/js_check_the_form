@@ -134,7 +134,4 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.code).toBe(422);
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
-
-  // possibly more tests needed
-  // although the task gives a hint not to focus on edge cases
 });
