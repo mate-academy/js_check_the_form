@@ -8,8 +8,9 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return object`, () => {
-    expect(typeof validateRegisterForm('test@mail.com', 'P@ssword1!'))
-      .toBe('object');
+    expect(typeof validateRegisterForm('test@mail.com', 'P@ssword1!')).toBe(
+      'object',
+    );
   });
 
   it(`should return success message for the valid input`, () => {
