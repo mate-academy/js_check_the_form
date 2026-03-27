@@ -1,6 +1,6 @@
 'use strict';
 
-describe(`Function 'validateRegisterForm':`, () => {
+describe(`validateRegisterForm`, () => {
   const validateRegisterForm = require('./validateRegisterForm');
 
   it(`should be declared`, () => {
@@ -27,5 +27,45 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it(`should return error for invalid email`, () => {
+    const result = validateRegisterForm('test@com', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error when both email and password are invalid`, () => {
+    const result = validateRegisterForm('test@com', 'password');
+
+    expect(result.code).toBe(500);
+    expect(result.message).toBe('Password and email are invalid.');
+  });
+
+  it(`should return error for password without uppercase letter`, () => {
+    const result = validateRegisterForm('test@mail.com', 'p@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for too short password`, () => {
+    const result = validateRegisterForm('test@mail.com', 'P@1!a');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for email with double dots`, () => {
+    const result = validateRegisterForm('test..mail@mail.com', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for email starting with dot`, () => {
+    const result = validateRegisterForm('.test@mail.com', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
 });
