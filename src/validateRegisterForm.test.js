@@ -68,4 +68,49 @@ describe(`validateRegisterForm`, () => {
     expect(result.code).toBe(422);
     expect(result.message).toBe('Email is invalid.');
   });
+
+  it(`should return error for password longer than 16 characters`, () => {
+    const result = validateRegisterForm(
+      'test@mail.com',
+      'P@ssword123456789!', // > 16
+    );
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for password without special character`, () => {
+    const result = validateRegisterForm('test@mail.com', 'Password1');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Password is invalid.');
+  });
+
+  it(`should accept valid password with Cyrillic letters`, () => {
+    const result = validateRegisterForm('test@mail.com', 'Пароль1!');
+
+    expect(result.code).toBe(200);
+    expect(result.message).toBe('Email and password are valid.');
+  });
+
+  it(`should return error for email without @ symbol`, () => {
+    const result = validateRegisterForm('testmail.com', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for email with dot before @`, () => {
+    const result = validateRegisterForm('user.@example.com', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for email ending with dot`, () => {
+    const result = validateRegisterForm('user@example.com.', 'P@ssword1!');
+
+    expect(result.code).toBe(422);
+    expect(result.message).toBe('Email is invalid.');
+  });
 });
