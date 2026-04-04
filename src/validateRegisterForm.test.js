@@ -121,4 +121,11 @@ describe(`Function 'validateRegisterForm':`, () => {
 
     expect(validEmail.message).toBe('Email and password are valid.');
   });
+
+  it(`should return error for email ending with dot`, () => {
+    const invalidEmail = validateRegisterForm('test@mail.com.', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
 });
