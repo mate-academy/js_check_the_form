@@ -27,5 +27,61 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  // write more tests here
+  it(`should return error for valid email and password without uppercase letter`, () => {
+    const invalidPassword = validateRegisterForm('test@mail.com', 'p@ssword1!');
+
+    expect(invalidPassword.code).toBe(422);
+    expect(invalidPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid email and password length less than 8 or more than 16`, () => {
+    const shortPassword = validateRegisterForm('test@mail.com', 'P@wrd1!');
+    const longPassword = validateRegisterForm(
+      'test@mail.com',
+      'P@sswooooooooord1!',
+    );
+
+    expect(shortPassword.code).toBe(422);
+    expect(shortPassword.message).toBe('Password is invalid.');
+    expect(longPassword.code).toBe(422);
+    expect(longPassword.message).toBe('Password is invalid.');
+  });
+
+  it(`should return error for valid password and email without '@'`, () => {
+    const invalidEmail = validateRegisterForm('testmail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password and email start with '.'`, () => {
+    const invalidEmail = validateRegisterForm('.test@mail.com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password and email contains double dots '..'`, () => {
+    const invalidEmail = validateRegisterForm('test@mail..com', 'P@ssword1!');
+
+    expect(invalidEmail.code).toBe(422);
+    expect(invalidEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error for valid password and email without second level domain or top level domain without dot`, () => {
+    const invalidSLDEmail = validateRegisterForm('test@com', 'P@ssword1!');
+    const invalidTLDEmail = validateRegisterForm('test@mailcom', 'P@ssword1!');
+
+    expect(invalidSLDEmail.code).toBe(422);
+    expect(invalidSLDEmail.message).toBe('Email is invalid.');
+    expect(invalidTLDEmail.code).toBe(422);
+    expect(invalidTLDEmail.message).toBe('Email is invalid.');
+  });
+
+  it(`should return error message for the invalid input`, () => {
+    const isInvalid = validateRegisterForm('test@com', 'ssword1');
+
+    expect(isInvalid.code).toBe(500);
+    expect(isInvalid.message).toBe('Password and email are invalid.');
+  });
 });
