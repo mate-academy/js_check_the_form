@@ -43,4 +43,4 @@ function validateRegisterForm(email, password) {
   };
 }
 
-module.exports = validateRegisterForm;
+module.exports = { validateRegisterForm };
