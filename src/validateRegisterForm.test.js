@@ -92,6 +92,13 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   describe('email', () => {
+    it('should reject an incorrect email', () => {
+      const invalidEmail = validateRegisterForm('test@mail.', 'P@ssw0rd');
+
+      expect(invalidEmail.code).toBe(422);
+      expect(invalidEmail.message).toBe('Email is invalid.');
+    });
+
     it('should reject an email without @ ', () => {
       const invalidEmail = validateRegisterForm('testmail.com', 'P@ssw0rd');
 
