@@ -78,7 +78,7 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(invalidPassword.message).toBe('Password is invalid.');
   });
 
-  it('should return error for valid email if password without uppercase letter', () => {
+  it('should reject password without uppercase letter', () => {
     const invalidPassword = validateRegisterForm(
       'test@mail.com',
       'p@sswokljuy1',
