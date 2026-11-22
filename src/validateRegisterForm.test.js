@@ -134,7 +134,7 @@ describe(`Function 'validateRegisterForm':`, () => {
   });
 
   it(`should return error for valid password if email address contains '..'`, () => {
-    const invalidEmail = validateRegisterForm('te:st@mail.com', 'P@ssword1!');
+    const invalidEmail = validateRegisterForm('test@mail..com', 'P@ssword1!');
 
     expect(invalidEmail.code).toBe(422);
     expect(invalidEmail.message).toBe('Email is invalid.');
