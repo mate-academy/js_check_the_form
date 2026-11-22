@@ -34,6 +34,20 @@ describe(`Function 'validateRegisterForm':`, () => {
     expect(isValid.message).toBe('Email and password are valid.');
   });
 
+  it(`should accept password with length 8 characters`, () => {
+    const isValid = validateRegisterForm('test@mail.com', 'P@впtв1!');
+
+    expect(isValid.code).toBe(200);
+    expect(isValid.message).toBe('Email and password are valid.');
+  });
+
+  it(`should accept password with length 16 characters`, () => {
+    const isValid = validateRegisterForm('test@mail.com', 'P@впtв1!kj5!hytr');
+
+    expect(isValid.code).toBe(200);
+    expect(isValid.message).toBe('Email and password are valid.');
+  });
+
   it(`should return error for valid email and password without number`, () => {
     const invalidPassword = validateRegisterForm('test@mail.com', 'P@ssword');
 
